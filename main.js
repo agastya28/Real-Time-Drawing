@@ -19,6 +19,8 @@ canvas = createCanvas(550, 550);
 canvas.position(650, 100);
 
 poseNet = ml5.poseNet(video, modelLoaded);
+
+poseNet.on('pose', gotPoses)
 }
 
 function modelLoaded() {
@@ -32,11 +34,12 @@ function draw() {
  fill('#bafc03');
  stroke('#bafc03');
 
- square(noseX, noseY, 50)
+ square(noseX, noseY, difference)
+
+ document.getElementById("square_side").innerHTML = "The Width and the Height of the Square is " + difference + " Pixels"
 
 
 
- poseNet.on('pose', gotPoses)
 
 }
 
@@ -48,7 +51,11 @@ function gotPoses(results) {
         noseX = results[0].pose.nose.x;
         noseY = results[0].pose.nose.y;
 
-       // leftWristX = results[0].pose.
+        leftWristX = results[0].pose.leftWrist.x;
+        rightWristX = results[0].pose.rightWrist.x;
+
+        difference = floor(leftWristX - rightWristX)
+        console.log(difference)
 
         console.log("Nose X = " + noseX + " Nose Y = " + noseY)
     }
